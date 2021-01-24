@@ -8,4 +8,7 @@ node ('hms1') {
     stage ('deploy') {
         junit 'gameoflife-web/target/surefire-reports/*.xml'
     }
+    stage ('archiveArtifacts artifacts') {
+        archiveArtifacts artifacts: 'gameoflife-web/target/*.war', followSymlinks: false
+    }
 }
