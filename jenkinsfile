@@ -5,7 +5,7 @@ node ('hms1') {
     stage ('build') {
         sh 'sh mvn package'
     }
-    stage ('deploy') {
+    stage ('junit') {
         junit 'gameoflife-web/target/surefire-reports/*.xml'
     }
     stage ('archiveArtifacts artifacts') {
