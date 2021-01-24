@@ -5,7 +5,7 @@ node ('hms1') {
     stage ('build') {
         sh 'sh mvn package'
     }
-    stage (testresults'){
+    stage ('testresults') {
         junit 'gemeoflife-web/target/surefire-reports/*.xml'
     }
 }
