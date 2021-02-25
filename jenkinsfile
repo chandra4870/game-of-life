@@ -1,46 +1,17 @@
-node('hms1') {
-    try {
-        def responses = null
-        stage('selection'){
-            responses = input message: 'Enter branch and select build type',
-            parameters: [string(defaultValue: '', description: 'Enter the branch', name: 'BRANCH_NAME'),
-                        choice(choices: 'DEBUG\nRELEASE', description: 'BUILD Type', name: 'BUILD_TYPE')]
+pipeline {
+    agent any
+    stages {
+        stage("build") {
+            steps {
+                sh "mvn -version"
+                sh "mvn clean install"
 
-        }
-
-        stage('git') {
-            git 'https://github.com/dummyrepos/game-of-life.git'
-        }
-        stage('build') {
-            if (responses.BUILD_TYPE == 'DEBUG'){
-                withSonarQubeEnv('SONAR7.1') {
-                    // requires SonarQube Scanner for Maven 3.2+
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
-                }
-                sh 'mvn clean package'
             }
-            if (responses.BUILD_TYPE == 'RELEASE'){
-                sh 'mvn clean install'
-            }
-            
-            
         }
-        stage('testresults'){
-            junit 'gameoflife-web/target/surefire-reports/*.xml'
+    }
+    post {
+        always {
+            clean()
         }
-        stage('archiveartifacts') {
-            archiveArtifacts artifacts: 'gameoflife-web/target/*.war', followSymlinks: false
-        }
-        currentBuild.result = 'SUCCESS'
-
     }
-    catch(err) {
-        currentBuild.result = 'FAILURE'
-    }
-    finally {
-        mail to: 'devops@learningthoughts.in', 
-             subject: "Status of the build: ${currentBuild.fullDisplayName}",
-             body: "${env.BUILD_URL} has ${currentBuild.result}"
-    }
-    
 }
