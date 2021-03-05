@@ -60,7 +60,7 @@ pipeline {
                 // junit test Results
                 junit testResults: "${params.TestResultsPath}"
 
- i               // archive the artifacts
+                // archive the artifacts
                 archive includes: "${params.ArtifactsToBeArchive}"
             }
         }
