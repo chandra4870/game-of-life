@@ -32,7 +32,7 @@ pipeline {
     stages {
         stage('git'){
             steps {
-                git branch: "${params.BranchToBuild}", url: 'https://github.com/dummyrepos/game-of-life.git'
+                git branch: "${params.BranchToBuild}", url: 'https://github.com/chandra4870/game-of-life.git'
             }
         }
         stage('debug build') {
