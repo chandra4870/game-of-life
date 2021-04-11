@@ -3,7 +3,7 @@ node {
         git 'https://github.com/wakaleo/game-of-life.git'
     }
     stage ('build') {
-        sh 'sh mvn package'
+        sh 'mvn package'
     }
     stage ('junit') {
         junit 'gameoflife-web/target/surefire-reports/*.xml'
