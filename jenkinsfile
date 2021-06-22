@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 pipeline {
     agent { label 'hms1' }
     triggers { cron('30 * * * 1-5') }
@@ -66,3 +67,19 @@ pipeline {
         }
     }
 }    
+=======
+node {
+    stage ('git') {
+        git 'https://github.com/wakaleo/game-of-life.git'
+    }
+    stage ('build') {
+        sh 'mvn package'
+    }
+    stage ('junit') {
+        junit 'gameoflife-web/target/surefire-reports/*.xml'
+    }
+    stage ('archiveArtifacts artifacts') {
+        archiveArtifacts artifacts: 'gameoflife-web/target/*.war', followSymlinks: false
+    }
+}
+>>>>>>> 9c476ff095ecb98c7b5e58257085f596bbffdb07
